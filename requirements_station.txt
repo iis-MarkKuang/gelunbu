@@ -1,0 +1,6 @@
+aio-pika==9.4.0
+pytz==2024.1
+psutil==5.9.8
+setuptools==67.8.0
+pydantic==1.10.12
+typing-extensions==4.11.0
