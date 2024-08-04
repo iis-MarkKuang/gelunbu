@@ -59,6 +59,6 @@ def activate_virtualenv_and_install(venv_path, packages_dir):
 
 if __name__ == "__main__":
     name = "columbus_work_station_venv"
-    # create_venv(name)
+    create_venv(name)
     activate_venv(name)
     install_packages('pip_packages')
