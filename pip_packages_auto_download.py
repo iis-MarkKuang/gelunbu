@@ -2,6 +2,7 @@ import subprocess
 import platform
 import sys
 
+
 def get_os_info():
     os_name = platform.system().lower()
     if os_name == "linux":
@@ -15,6 +16,7 @@ def get_os_info():
         os_name = "win"
     return "win" if os_name == "win" else "manylinux1"
 
+
 def get_architecture():
     machine = platform.machine().lower()
     if machine in ("x86_64", "amd64"):
@@ -25,6 +27,7 @@ def get_architecture():
         return machine  # i386 or i686
     else:
         return "unknown"
+
 
 # --no-deps is by default
 def download_packages(pip_dept_file_path, target_folder, pypi_index):
@@ -37,7 +40,8 @@ def download_packages(pip_dept_file_path, target_folder, pypi_index):
         print("Unsupported OS or architecture")
         sys.exit(1)
     
-    command = [sys.executable, "-m", "pip", "download", "--platform", os_info + "_" + arch_info, "--no-deps",  "-r", pip_dept_file_path, "-d", target_folder, "-i", pypi_index]
+    command = [sys.executable, "-m", "pip", "download", "--platform", os_info + "_" + arch_info, "--no-deps",
+               "-r", pip_dept_file_path, "-d", target_folder, "-i", pypi_index]
     print(f"Running command: {' '.join(command)}")
     subprocess.run(command, check=True)
 
