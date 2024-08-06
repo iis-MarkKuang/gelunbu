@@ -15,20 +15,28 @@ def activate_venv(venv_name):
     subprocess.run(command, shell=True, check=True)
 
 
-def install_packages(pip_dir):
+def install_packages(pip_dir, venv_path):
+    if platform.system() == "Windows":
+        pip_executable = os.path.join(os.getcwd(), venv_path, "Scripts", "pip")
+        python_executable = os.path.join(os.getcwd(), venv_path, "Scripts", "python3")
+    else:  # Assume Unix-like system
+        pip_executable = os.path.join(os.getcwd(), venv_path, "bin", "pip")
+        python_executable = os.path.join(os.getcwd(), venv_path, "bin", "python3")
+
+
     pip_dir = '%s/%s' % (os.getcwd(), pip_dir)
     os.chdir(pip_dir)
-    for filename in os.listdir(pip_dir):
-        if '.whl' in filename:
-            command = "pip install %s" % filename
+    for package in os.listdir(pip_dir):
+        if '.whl' in package:
+            command = "pip install %s" % package
+            print(f"Running command: {command}")
+            subprocess.run([pip_executable, "install", package], check=True, capture_output=True, text=True)
+        elif '.tar.gz' in package:
+            command = "tar -xzvf ./%s" % package
             print(f"Running command: {command}")
             subprocess.run(command, shell=True, check=True)
-        elif '.tar.gz' in filename:
-            command = "tar -xzvf ./%s" % filename
-            print(f"Running command: {command}")
-            subprocess.run(command, shell=True, check=True)
-            os.chdir('%s/%s' % (pip_dir, filename.split(".tar.gz")[0]))
-            subprocess.run("python3 setup.py install", shell=True, check=True)
+            os.chdir('%s/%s' % (pip_dir, package.split(".tar.gz")[0]))
+            subprocess.run([python_executable, "setup.py", "install"], check=True, capture_output=True, text=True)
             os.chdir(pip_dir)
 
 
@@ -58,7 +66,7 @@ def activate_virtualenv_and_install(venv_path, packages_dir):
             sys.exit(1)
 
 if __name__ == "__main__":
-    name = "columbus_work_station_venv"
-    create_venv(name)
-    activate_venv(name)
-    install_packages('pip_packages')
+    venv_name = "columbus_work_station_venv"
+    create_venv(venv_name)
+    activate_venv(venv_name)
+    install_packages('pip_packages', venv_name)
