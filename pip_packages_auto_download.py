@@ -1,3 +1,4 @@
+import os
 import subprocess
 import platform
 import sys
@@ -46,16 +47,33 @@ def download_pip_packages(pip_dept_file_path, target_folder, pypi_index):
     subprocess.run(command, check=True)
 
 
-def download_dnf_packages(target_folder):
+def download_dnf_packages(target_folder, install=False):
     dept_list = ["gcc-c++", "python3-devel"]
     for dept in dept_list:
-        command = ["dnf", "install", dept, "--downloadonly", "--downloaddir", "=", target_folder]
+        command = ["dnf", "install", "-y", dept, "--downloadonly", "--downloaddir=" + target_folder]
         print(f"Running command: {' '.join(command)}")
         subprocess.run(command, check=True)
+
+    if install:
+        for dept in os.listdir(target_folder):
+            if 'c++' in dept:
+                command = ["dnf", "install", "--noautoremove", "-y",  target_folder + '/' + dept]
+                print(f"Running command: {' '.join(command)}")
+                subprocess.run(command, check=True)
+
+
+# pre-installs gcc-c++ and python3-devel
+def pre_setup():
+    subprocess.run(["dnf", "install", "-y", "gcc-c++"], check=True)
+    subprocess.run(["dnf", "install", "-y", "python3-devel"], check=True)
 
 
 if __name__ == "__main__":
     dep_target_folder = './packages'
+    target_folder = './pip_packages'
+    pre_setup()
+    download_dnf_packages(dep_target_folder, True)
+    download_pip_packages('./requirements_full.txt', target_folder, "")
+    os.system("dnf remove -y gcc-c++")
     download_dnf_packages(dep_target_folder)
-    download_pip_packages('./requirements_station.txt', target_folder, "")
 

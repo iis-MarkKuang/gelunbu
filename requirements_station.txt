@@ -1,3 +1,25 @@
+# aio-pika requirements
+aiormq==6.8.0
+
+# flake8 requirements
+pycodestyle==2.11.0
+mccabe==0.7.0
+pyflakes==3.2.0
+
+# pre_commit requirements
+nodeenv==0.11.1
+pyyaml==5.1
+cfgv==2.0.0
+virtualenv==20.10.0
+identify==1.0.0
+
+# usort requirements
+attrs==21.2.0
+stdlibs==2021.4.1
+moreorless==0.3.0
+trailrunner==1.0
+LibCST==0.3.7
+
 grpcio==1.54.2
 grpcio-tools==1.54.2
 protobuf==4.23.1
