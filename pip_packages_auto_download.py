@@ -7,7 +7,7 @@ import sys
 def get_os_info():
     os_name = platform.system().lower()
     if os_name == "linux":
-        os_name = "manylinux1"
+        os_name = "manylinux2014"
         # Further check for specific Linux distribution
         # distro = platform.linux_distribution()[0].lower()
         # if "centos" in distro and "stream" in distro and "9" in platform.release():
@@ -15,7 +15,7 @@ def get_os_info():
     elif os_name == "windows":
         # os_name = "windows11" if "10.0" in platform.version() else os_name
         os_name = "win"
-    return "win" if os_name == "win" else "manylinux1"
+    return "win" if os_name == "win" else "manylinux2014"
 
 
 def get_architecture():
